@@ -44,19 +44,51 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         map.draw((Graphics2D) graphics);
 
         // Borders
-        graphics.setColor(Color.yellow);
+        graphics.setColor(Color.magenta);
         graphics.fillRect(0, 0, 3, 592);
         graphics.fillRect(0, 0, 692, 3);
         graphics.fillRect(681, 0, 3, 592);
 
+        // Score
+        graphics.setColor(Color.white);
+        graphics.setFont(new Font("serif", Font.BOLD, 25));
+        graphics.drawString("Score: " + score, 565, 30);
+        graphics.drawString("Bricks: " + totalBricks, 10, 30);
+
         // Paddle
-        graphics.setColor(Color.green);
+        graphics.setColor(Color.cyan);
         graphics.fillRect(playerX, 550, 100, 8);
 
         // Ball
         graphics.setColor(Color.yellow);
         graphics.fillOval(ballPositionX, ballPositionY, 20, 20);
 
+        // Win
+        if(totalBricks == 0) {
+            play = false;
+            ballDirectionX = 0;
+            ballDirectionY = 0;
+            graphics.setColor(Color.green);
+            graphics.setFont(new Font("serif", Font.BOLD, 30));
+            graphics.drawString("YOU WON!", 260, 300);
+
+            graphics.setColor(Color.white);
+            graphics.setFont(new Font("serif", Font.BOLD, 20));
+            graphics.drawString("Press Enter To Restart", 250, 400);
+        }
+        // Game-over
+        if(ballPositionY > 570) {
+            play = false;
+            ballDirectionX = 0;
+            ballDirectionY = 0;
+            graphics.setColor(Color.red);
+            graphics.setFont(new Font("serif", Font.BOLD, 30));
+            graphics.drawString("GAME OVER", 250, 300);
+
+            graphics.setColor(Color.white);
+            graphics.setFont(new Font("serif", Font.BOLD, 20));
+            graphics.drawString("Press Enter To Restart", 250, 400);
+        }
         graphics.dispose();
     }
 
@@ -83,7 +115,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                         if(ballRect.intersects(brickRect)) {
                             map.setBrickValue(0, i, j);
                             totalBricks--;
-                            score ++;
+                            score+= 10;
 
                             if(ballPositionX + 19 <= brickRect.x || ballPositionX + 1 >= brickRect.x + brickRect.width) {
                                 ballDirectionX = -ballDirectionX;
@@ -134,6 +166,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 playerX = 3;
             } else {
                 moveLeft();
+            }
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            if(!play) {
+                play = true;
+                ballPositionX = 120;
+                ballPositionY = 350;
+                ballDirectionX = -1;
+                ballDirectionY = -2;
+                playerX = 310;
+                score = 0;
+                totalBricks = 21;
+                map = new MapGenerator(3, 7);
+
+                repaint();
             }
         }
     }
