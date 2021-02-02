@@ -22,8 +22,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     private int ballDirectionX = -1;
     private int ballDirectionY = -2;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public GamePlay() {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -32,17 +31,29 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     }
 
     public void paint(Graphics graphics) {
-        //Background
+        //vBackground
         graphics.setColor(Color.black);
         graphics.fillRect(1, 1, 692, 592);
 
-        //Borders
+        //vBorders
         graphics.setColor(Color.yellow);
         graphics.fillRect(0, 0, 3, 592);
         graphics.fillRect(0, 0, 692, 3);
         graphics.fillRect(691, 0, 3, 592);
+
+        // Paddle
+        graphics.setColor(Color.green);
+        graphics.fillRect(playerX, 550, 100, 8);
+
+        // Ball
+        graphics.setColor(Color.yellow);
+        graphics.fillRect(ballPositionX, ballPositionY, 20, 20);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
     @Override
     public void keyTyped(KeyEvent e) {
 

@@ -8,7 +8,7 @@ public class Main {
 
         window.setBounds(10, 10, 700, 600);
         window.setTitle("Brick Breaker");
-        window.setResizable(true);
+        window.setResizable(false);
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.add(gamePlay);
