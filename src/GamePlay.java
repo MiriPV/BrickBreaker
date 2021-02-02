@@ -55,6 +55,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
+        if(play) {
+            if(new Rectangle(ballPositionX, ballPositionY, 20, 20).intersects(new Rectangle(playerX, 550, 100, 8))) {
+                ballDirectionY = - ballDirectionY;
+            }
+            ballPositionX += ballDirectionX;
+            ballPositionY += ballDirectionY;
+            if(ballPositionX < 0) {
+                ballDirectionX = -ballDirectionX;
+            }
+            if(ballPositionY < 0) {
+                ballDirectionY = -ballDirectionY;
+            }
+            if(ballPositionX > 681) {
+                ballDirectionX = -ballDirectionX;
+            }
+        }
         repaint();
     }
 
@@ -67,12 +83,14 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if(playerX >= 581) {
+            if (playerX >= 581) {
                 playerX = 581;
             } else {
                 moveRight();
             }
-        } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
             if(playerX <= 3) {
                 playerX = 3;
             } else {
