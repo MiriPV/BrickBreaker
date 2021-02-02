@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
         JFrame window = new JFrame();
-        GamePlay gamePlay = new GamePlay();
+        GamePlay gamePlay = new GamePlay(1, 4);
 
         window.setBounds(10, 10, 700, 600);
         window.setTitle("Brick Breaker");

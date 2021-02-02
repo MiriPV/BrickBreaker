@@ -6,13 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
     private boolean play = false;
     private int score = 0;
 
-    private int totalBricks = 21;
+    private int totalBricks;
+    private Color brickColor;
 
     private Timer timer;
     private int delay = 8;
@@ -21,13 +24,18 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
     private int ballPositionX = 120;
     private int ballPositionY = 350;
-    private int ballDirectionX = -1;
+    private int ballDirectionX = -2;
     private int ballDirectionY = -2;
 
+    private Random ran = new Random();
+    public ArrayList<Color> colorList = new ArrayList<>();
     private MapGenerator map;
 
-    public GamePlay() {
-        map = new MapGenerator(3, 7);
+    public GamePlay(int row, int col) {
+        colors();
+        generateRandomColor();
+        map = new MapGenerator(row, col);
+        totalBricks = row * col;
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -41,7 +49,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         graphics.fillRect(1, 1, 692, 592);
 
         // Map
-        map.draw((Graphics2D) graphics);
+        map.draw((Graphics2D) graphics, brickColor);
 
         // Borders
         graphics.setColor(Color.magenta);
@@ -174,12 +182,15 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 play = true;
                 ballPositionX = 120;
                 ballPositionY = 350;
-                ballDirectionX = -1;
+                ballDirectionX = -2;
                 ballDirectionY = -2;
                 playerX = 310;
                 score = 0;
-                totalBricks = 21;
-                map = new MapGenerator(3, 7);
+                int x = ran.nextInt(7) + 2;
+                int y = ran.nextInt(7) + 2;
+                totalBricks = x * y;
+                generateRandomColor();
+                map = new MapGenerator(x, y);
 
                 repaint();
             }
@@ -188,11 +199,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
     public void moveRight() {
         play = true;
-        playerX += 20;
+        playerX += 30;
     }
 
     public void moveLeft() {
         play = true;
-        playerX -= 20;
+        playerX -= 30;
+    }
+
+    public void colors() {
+        colorList.add(Color.white);
+        colorList.add(Color.blue);
+        colorList.add(Color.red);
+    }
+
+    public void generateRandomColor() {
+        int x = ran.nextInt(3);
+        brickColor = colorList.get(x);
     }
 }
