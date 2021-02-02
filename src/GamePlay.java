@@ -31,15 +31,15 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     }
 
     public void paint(Graphics graphics) {
-        //vBackground
+        // Background
         graphics.setColor(Color.black);
         graphics.fillRect(1, 1, 692, 592);
 
-        //vBorders
+        // Borders
         graphics.setColor(Color.yellow);
         graphics.fillRect(0, 0, 3, 592);
         graphics.fillRect(0, 0, 692, 3);
-        graphics.fillRect(691, 0, 3, 592);
+        graphics.fillRect(681, 0, 3, 592);
 
         // Paddle
         graphics.setColor(Color.green);
@@ -54,18 +54,37 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
-    @Override
-    public void keyTyped(KeyEvent e) {
 
-    }
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            if(playerX >= 600) {
+                playerX = 600;
+            } else {
+                moveRight();
+            }
+        } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            if(playerX < 10) {
+                playerX = 10;
+            } else {
+                moveLeft();
+            }
+        }
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+    public void moveRight() {
+        play = true;
+        playerX += 20;
+    }
 
+    public void moveLeft() {
+        play = true;
+        playerX -= 20;
     }
 }
