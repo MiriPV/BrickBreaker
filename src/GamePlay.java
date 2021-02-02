@@ -1,3 +1,5 @@
+import org.w3c.dom.css.Rect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -62,8 +64,39 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         timer.start();
         if(play) {
-            if(new Rectangle(ballPositionX, ballPositionY, 20, 20).intersects(new Rectangle(playerX, 550, 100, 8))) {
+            Rectangle ballRect = new Rectangle(ballPositionX, ballPositionY, 20, 20);
+            Rectangle paddleRect = new Rectangle(playerX, 550, 100, 8);
+            if(ballRect.intersects(paddleRect)) {
                 ballDirectionY = - ballDirectionY;
+            }
+
+            A: for(int i = 0; i < map.map.length; i++) {
+                for(int j = 0; j < map.map[0].length; j++) {
+                    if(map.map[i][j] > 0) {
+                        int brickX = j * map.brickWidth + 80;
+                        int brickY = i * map.brickHeight + 50;
+                        int brickWidth =  map.brickWidth;
+                        int brickHeight = map.brickHeight;
+
+                        Rectangle brickRect = new Rectangle(brickX, brickY, brickWidth, brickHeight);
+
+                        if(ballRect.intersects(brickRect)) {
+                            map.setBrickValue(0, i, j);
+                            totalBricks--;
+                            score ++;
+
+                            if(ballPositionX + 19 <= brickRect.x || ballPositionX + 1 >= brickRect.x + brickRect.width) {
+                                ballDirectionX = -ballDirectionX;
+                            } else {
+                                ballDirectionY = -ballDirectionY;
+                            }
+
+                            break A;
+                        }
+
+
+                    }
+                }
             }
             ballPositionX += ballDirectionX;
             ballPositionY += ballDirectionY;
@@ -73,7 +106,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
             if(ballPositionY < 0) {
                 ballDirectionY = -ballDirectionY;
             }
-            if(ballPositionX > 681) {
+            if(ballPositionX > 661) {
                 ballDirectionX = -ballDirectionX;
             }
         }
